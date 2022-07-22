@@ -35,6 +35,25 @@ if (isset($_POST['btn-signup'])) {
    }
 }
 
+// Edit Journal
+if (isset($_POST['editJournal'])) {
+   // call function and check insert
+   if (journalEdit($_POST) > 0) {
+      echo "
+          <script>
+              alert('Data Berhasil diubah');
+              document.location.href = 'index.php';
+          </script>
+      ";
+   } else {
+      echo "
+      <script>
+          alert('Data Gagal diubah');
+      </script>
+      ";
+   }
+}
+
 // Create Journal
 if (isset($_POST['createJournal'])) {
    // call function and check insert
@@ -54,6 +73,24 @@ if (isset($_POST['createJournal'])) {
    }
 }
 
+// Delete Journal
+if (isset($_GET['delJournal'])) {
+   // call function and check insert
+   if (journalDelete($_GET['delJournal']) > 0) {
+      echo "
+          <script>
+              alert('Data Berhasil Dihapus');
+              document.location.href = 'index.php';
+          </script>
+      ";
+   } else {
+      echo "
+      <script>
+          alert('Data Gagal Dihapus');
+      </script>
+      ";
+   }
+}
 
 ?>
 
@@ -151,7 +188,7 @@ if (isset($_POST['createJournal'])) {
                      <img src="/assets/img/photo-profile.jpg" alt="" class="photoProfile">
                      <div class="writer">FandyRdh</div>
                   </div>
-                  <a class="readMore hovOn" data-title="<?php $journal['TITILE'] ?>" id="btn-readmore" data-body2="<?= $journal['BODY2']; ?>">Read More ⇾</a>
+                  <a class="readMore hovOn" data-body2="<?= $journal['BODY2']; ?>" data-title="<?= $journal['TITILE'] ?>" data-idjournal="<?= $journal['ID_JURNAL']; ?>">Read More ⇾</a>
                </div>
             <?php endforeach; ?>
 
@@ -306,6 +343,7 @@ if (isset($_POST['createJournal'])) {
       <div class="modal-dialog modal-fullscreen">
          <div class="modal-content">
             <div class="modal-body">
+               <!--  -->
                <div class="cover" style="background-image: url(assets/img/Cover.png);">
                   <div class="container-fluid">
                      <!-- Button Close -->
@@ -320,7 +358,7 @@ if (isset($_POST['createJournal'])) {
                            </button>
                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                               <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#ModalJurnalEdit">Edit Jurnal</a></li>
-                              <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalDeleteJurnal">Delete Jurnal</a></li>
+                              <li><a class="dropdown-item" id="deleteJournal">Delete Jurnal</a></li>
                            </ul>
                         </div>
                         <!-- share -->
@@ -346,23 +384,13 @@ if (isset($_POST['createJournal'])) {
                      </div>
                   </div>
                </div>
+               <!--  -->
                <div class="container jurnal">
                   <div class="row">
                      <div class="col leftSection">
-                        <h6 class="titleJurnal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, enim?</h6>
+                        <h6 class="titleJurnal" id="titleJurnal">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt, enim?</h6>
                         <!--  -->
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, eos nobis dolorem ad earum modi mollitia assumenda harum ex numquam.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem et qui temporibus, omnis quidem iure aspernatur maxime cumque repellat vel provident sapiente sint, doloribus debitis unde dolore optio accusamus a!</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos assumenda cumque odio, optio totam voluptatum velit vero! Nemo repudiandae architecto sapiente esse, molestias doloribus odit tempora ratione ducimus quae, harum nostrum! Minima rerum provident, quia expedita voluptatum corporis aperiam voluptatibus ipsam modi ullam inventore quis, deserunt fugiat cupiditate quisquam ab.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae dolorem officia dolor nesciunt neque corporis voluptas pariatur quo rem eos deserunt quis perferendis delectus quae praesentium eum, expedita labore sit. Ipsum, id. Aperiam voluptatum labore enim quia quasi laborum aut blanditiis optio exercitationem. Dolorem atque quae nobis veniam, molestias expedita?</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, eos nobis dolorem ad earum modi mollitia assumenda harum ex numquam.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem et qui temporibus, omnis quidem iure aspernatur maxime cumque repellat vel provident sapiente sint, doloribus debitis unde dolore optio accusamus a!</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos assumenda cumque odio, optio totam voluptatum velit vero! Nemo repudiandae architecto sapiente esse, molestias doloribus odit tempora ratione ducimus quae, harum nostrum! Minima rerum provident, quia expedita voluptatum corporis aperiam voluptatibus ipsam modi ullam inventore quis, deserunt fugiat cupiditate quisquam ab.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae dolorem officia dolor nesciunt neque corporis voluptas pariatur quo rem eos deserunt quis perferendis delectus quae praesentium eum, expedita labore sit. Ipsum, id. Aperiam voluptatum labore enim quia quasi laborum aut blanditiis optio exercitationem. Dolorem atque quae nobis veniam, molestias expedita?</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, eos nobis dolorem ad earum modi mollitia assumenda harum ex numquam.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem et qui temporibus, omnis quidem iure aspernatur maxime cumque repellat vel provident sapiente sint, doloribus debitis unde dolore optio accusamus a!</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Dignissimos assumenda cumque odio, optio totam voluptatum velit vero! Nemo repudiandae architecto sapiente esse, molestias doloribus odit tempora ratione ducimus quae, harum nostrum! Minima rerum provident, quia expedita voluptatum corporis aperiam voluptatibus ipsam modi ullam inventore quis, deserunt fugiat cupiditate quisquam ab.</p>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vitae dolorem officia dolor nesciunt neque corporis voluptas pariatur quo rem eos deserunt quis perferendis delectus quae praesentium eum, expedita labore sit. Ipsum, id. Aperiam voluptatum labore enim quia quasi laborum aut blanditiis optio exercitationem. Dolorem atque quae nobis veniam, molestias expedita?</p>
+                        <div id="body1"></div>
                      </div>
                      <div class="col-2 rightSection">
                         <img src="assets/img/photo-profile.jpg" alt="">
@@ -377,6 +405,32 @@ if (isset($_POST['createJournal'])) {
       </div>
    </div>
 
+   <!-- Modal jurnalUpdatee -->
+   <div class="modal fade" id="ModalJurnalEdit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+         <div class="modal-content">
+            <div class="modal-body">
+               <center>
+                  <h6>Edit Journal</h6>
+               </center>
+               <form action="" method="POST">
+                  <div class="form-floating mb-3">
+                     <textarea class="form-control" name="title-edit" placeholder="Leave a titile here" id="titileEdit" style="height: 100px"></textarea>
+                     <label for="titileEdit">Titile Journal</label>
+                  </div>
+                  <div class="form-floating mb-4">
+                     <textarea class="form-control" name="body1-edit" placeholder="Leave a body journal here" id="bodyEdit" style="height: 400px"></textarea>
+                     <label for="bodyEdit">Body Journal</label>
+                  </div>
+                  <input type="hidden" name="idJurnal-edit" id="idJournal">
+                  <center>
+                     <button class="btn btn-primary" name="editJournal">Save Changes</button>
+                  </center>
+               </form>
+            </div>
+         </div>
+      </div>
+   </div>
    <!-- Modal jurnalCreate -->
    <div class="modal fade" id="ModalJurnalCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl">
@@ -403,37 +457,42 @@ if (isset($_POST['createJournal'])) {
       </div>
    </div>
 
-
-
-
-
-
-
    <script>
-      // 
-      document.getElementById("btn-readmore").addEventListener("click", myFunction);
+      const boxes = document.querySelectorAll('.readMore');
 
-      function myFunction() {
+      boxes.forEach(box => {
+         box.addEventListener('click', function handleClick(event) {
+            // Set Element
+            const titleJurnal = document.getElementById('titleJurnal');
+            const body1 = document.getElementById('body1');
+            const deleteJournal = document.getElementById('deleteJournal');
+            const titileEdit = document.getElementById('titileEdit');
+            const bodyEdit = document.getElementById('bodyEdit');
+            const idJournal = document.getElementById('idJournal');
+            // const body1 = document.getElementById('body1');
+            // Get Data
+            var idjournal = this.dataset.idjournal;
+            var dataTitle = this.dataset.title;
+            var dataBody2 = this.dataset.body2;
 
-         alert("hai");
-         // var title = this.dataset.title;
-         // var body2 = this.dataset.body2;
-         // alert(body2);
+            // var
+            var deleteLink = "index.php?delJournal=" + idjournal;
 
-         // var myModal = new bootstrap.Modal(ModalJurnalView, {});
-
-
-         // // var1 = document.getElementById("hahaha").innerText;
-         // // var1 = document.getElementById('hahaha').value;
-
-
-         // // document.getElementById("input2").setAttribute('value', var1);
-         // // document.getElementById("imageid").src = var2;
-         // // document.getElementById("hahaha").setAttribute('value', var1);
-         // myModal.show();
+            // Set data at element
+            titleJurnal.innerHTML = dataTitle;
+            body1.textContent = dataBody2;
+            deleteJournal.href = deleteLink;
+            titileEdit.value = dataTitle;
+            bodyEdit.value = dataBody2;
+            idJournal.value = idjournal;
 
 
-      }
+            // Show Modal
+            var myModal = new bootstrap.Modal(ModalJurnalView, {});
+            myModal.show();
+
+         });
+      });
    </script>
 
    <script>

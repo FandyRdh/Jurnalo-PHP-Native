@@ -100,6 +100,26 @@ function journalCreate($data)
     return mysqli_affected_rows($conn);
 }
 
+function journalEdit($data)
+{
+    global $conn;
+    // var_dump($data);
+    $ID_JURNAL = $data['idJurnal-edit'];
+    $TITILE = htmlspecialchars($data['title-edit']);
+    $BODY2 = $data['body1-edit'];
+    // Upload Gambar
+    // $gambar = upload();
+    // if (!$gambar) {
+    //     return false;
+    // }
+
+
+    $query = "UPDATE jurnals SET TITILE='$TITILE',BODY2='$BODY2' WHERE ID_JURNAL='$ID_JURNAL'";
+    mysqli_query($conn, $query);
+
+    return mysqli_affected_rows($conn);
+}
+
 function journalView()
 {
     global $conn;
@@ -115,4 +135,14 @@ function journalView()
         $rows[] = $row;
     }
     return $rows;
+}
+
+function journalDelete($idJournal)
+{
+    global $conn;
+
+    $query = "DELETE FROM jurnals WHERE ID_JURNAL = '$idJournal';";
+    mysqli_query($conn, $query);
+
+    return mysqli_affected_rows($conn);
 }
